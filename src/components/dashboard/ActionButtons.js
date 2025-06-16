@@ -54,23 +54,14 @@ const ActionButtons = ({user, protInfo}) => {
     const appUrl = `whatsapp://send?phone=${formattedNumber}&text=${encodedMessage}`;
 
     try {
-      const supported = await Linking.canOpenURL(appUrl);
-
-      if (!supported) {
-        Alert.alert(
-          'WhatsApp no está instalado',
-          'Por favor instala WhatsApp para enviar mensajes desde la app.',
-          [{text: 'OK'}],
-        );
-        return;
-      }
-
       await Linking.openURL(appUrl);
     } catch (error) {
       console.error('Error abriendo WhatsApp:', error);
-      Alert.alert('Error', 'Hubo un problema al intentar abrir WhatsApp.', [
-        {text: 'OK'},
-      ]);
+      Alert.alert(
+        'WhatsApp no está instalado',
+        'Por favor instala WhatsApp para enviar mensajes desde la app.',
+        [{text: 'OK'}],
+      );
     }
   };
 
@@ -145,7 +136,6 @@ const ActionButtons = ({user, protInfo}) => {
   };
 
   const getPermission = async () => {
-
     if (Platform.OS === 'ios') {
       const hasPermission = await permissionsIOS();
       if (hasPermission) {

@@ -31,10 +31,9 @@ import loginReducer from './src/reducers/loginReducer';
 // });
 
 // // OneSignal Initialization
-OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+// OneSignal.Debug.setLogLevel(LogLevel.Verbose);
 OneSignal.initialize('f1901330-b278-4247-8687-a20d2f0c5a76');
 OneSignal.Notifications.requestPermission(false);
-
 
 const App = () => {
   const initialLoginState = {

@@ -42,41 +42,51 @@ const PasswordForm = ({stateChanger, email: userEmail}) => {
 
   const sendRecoveryForm = async () => {
     setIsLoading(true);
+
     let user = await getLocalUser();
+
     delete axios.defaults.headers.common.Authorization;
+
     try {
       await axios.post('/forgot-password', {
         ...formValues,
       });
 
-      await AsyncStorage.removeItem('hasRequestChanges');
+      await AsyncStorage.multiRemove(['hasRequestChanges', 'localUser']);
+
       Alert.alert(
         'Recuperación',
         'Contraseña cambiada con éxito.',
         [{text: 'Gracias'}],
         {cancelable: false},
       );
-      await AsyncStorage.removeItem('localUser');
-      signOut();
 
       if (user) {
         navigation.navigate('Dashboard', {refresh: true});
       } else {
-        navigation.goBack();
+        signOut();
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Login', params: {refresh: true}}],
+        });
       }
     } catch (e) {
       setIsLoading(false);
+      await AsyncStorage.removeItem('hasRequestChanges');
       Alert.alert(
         'Recuperación',
         'Token inválido, por favor vuelva a intentarlo.',
         [{text: 'Gracias'}],
         {cancelable: false},
       );
-      await AsyncStorage.removeItem('hasRequestChanges');
-      navigation.navigate('Login', {refresh: true});
+      signOut();
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Login', params: {refresh: true}}],
+      });
 
       throw new Error(
-        `Error on Recovery Form sendRegisterForm ${e.message}, ${e}`,
+        `Error en sendRecoveryForm: ${e.message}, ${JSON.stringify(e)}`,
       );
     }
   };

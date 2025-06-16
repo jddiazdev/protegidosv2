@@ -6,7 +6,10 @@ require Pod::Executable.execute_command('node', ['-p',
   )', __dir__]).strip
 
 platform :ios, min_ios_version_supported
+install! 'cocoapods', :deterministic_uuids => false
 prepare_react_native_project!
+
+
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -32,4 +35,8 @@ target 'protegidov2' do
       # :ccache_enabled => true
     )
   end
+end
+
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignalXCFramework', '>= 5.0.0', '< 6.0'
 end

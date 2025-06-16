@@ -15,9 +15,16 @@ const WebviewScreen = ({route, navigation}) => {
         <View style={styles.wrapper}>
           <WebView
             source={{
-              uri: `${protegidosBaseUrl}/epayco/${user.email}/${plan.id}/${plan.duration}/${plan.name}`,
+              uri: `${protegidosBaseUrl}/epayco/${user.email}/${plan.id}`,
             }}
             style={styles.webview}
+            onMessage={event => {
+              if (event.nativeEvent.data === 'close_webview') {
+                navigation.goBack();
+              }
+            }}
+            javaScriptEnabled
+            domStorageEnabled
           />
         </View>
       </SafeAreaView>

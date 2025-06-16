@@ -7,12 +7,12 @@ import {
   View,
   ActivityIndicator,
   Alert,
+  Dimensions,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import axios from '../network/axios';
-
 import FormField from '../components/forms/FormField';
 import {useFormData} from '../hooks/useFormData';
 import {useFormValidate} from '../hooks/useFormValidate';
@@ -21,6 +21,8 @@ import PasswordForm from '../components/dashboard/PasswordForm';
 import BackButton from '../components/header/BackButton';
 import {mainStyles} from '../styles/main';
 import Button from '../components/buttons/Button';
+
+const {width} = Dimensions.get('window');
 
 const RecoverPasswordScreen = ({navigation}) => {
   const [firstTime, setFirstTime] = useState(true);
@@ -58,11 +60,7 @@ const RecoverPasswordScreen = ({navigation}) => {
       Alert.alert(
         'Recuperación',
         'Debe enviar un email válido',
-        [
-          {
-            text: 'Gracias',
-          },
-        ],
+        [{text: 'Gracias'}],
         {cancelable: false},
       );
       setIsLoading(false);
@@ -83,25 +81,17 @@ const RecoverPasswordScreen = ({navigation}) => {
         setIsLoading(false);
         Alert.alert(
           'Recuperación',
-          'Enviaremos un correo a su cuenta, con un código único, con este y su correo, podrá recuperar su contraseña.',
-          [
-            {
-              text: 'Gracias',
-            },
-          ],
+          'Enviaremos un correo a su cuenta con un código único. Con este y su correo podrá recuperar su contraseña.',
+          [{text: 'Gracias'}],
           {cancelable: false},
         );
       })
-      .catch(e => {
+      .catch(() => {
         setIsLoading(false);
         Alert.alert(
           'Recuperación',
           'El email enviado no es válido',
-          [
-            {
-              text: 'Gracias',
-            },
-          ],
+          [{text: 'Gracias'}],
           {cancelable: false},
         );
       })
@@ -119,6 +109,7 @@ const RecoverPasswordScreen = ({navigation}) => {
       <StatusBar barStyle="light-content" />
       <SafeAreaView style={[styles.mainWrapper, styles.viewAllign]}>
         <KeyboardAwareScrollView>
+          <View style={{height: 50}} />
           <BackButton />
           <Text style={mainStyles.title}>Cambiar contraseña</Text>
           {firstTime ? (
@@ -149,6 +140,7 @@ const RecoverPasswordScreen = ({navigation}) => {
                 variant="secondary"
                 onPress={requestChangeEmail}
                 disabled={isLoading}
+                customStyle={styles.btn}
               />
             </View>
           ) : (
@@ -164,12 +156,21 @@ const RecoverPasswordScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  viewAllign: {
-    alignItems: 'center',
-  },
   mainWrapper: {
     backgroundColor: Colors.primary,
     flex: 1,
+  },
+  viewAllign: {
+    alignItems: 'center',
+  },
+  btn: {
+    width: width * 0.85,
+    paddingVertical: 14,
+    borderRadius: 12,
+    marginTop: 24,
+  },
+  loading: {
+    marginVertical: 16,
   },
 });
 

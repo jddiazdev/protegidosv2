@@ -143,7 +143,10 @@ const styles = StyleSheet.create({
     aspectRatio: 191 / 171,
   },
   btn: {
-    marginBottom: 8,
+    marginBottom: 12,
+    paddingVertical: 14,
+    minHeight: 50,
+    borderRadius: 12,
   },
 });
 

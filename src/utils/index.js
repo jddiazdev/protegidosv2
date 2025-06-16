@@ -21,7 +21,6 @@ const createFormData = (photo, body, type, user) => {
 
 const getLocalUser = async () => {
   const user = await AsyncStorage.getItem('localUser');
-
   return JSON.parse(user);
 };
 
