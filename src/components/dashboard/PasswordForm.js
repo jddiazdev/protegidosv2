@@ -61,8 +61,13 @@ const PasswordForm = ({stateChanger, email: userEmail}) => {
         {cancelable: false},
       );
 
+      setIsLoading(false);
+
       if (user) {
-        navigation.navigate('Dashboard', {refresh: true});
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Dashboard', params: {refresh: true}}],
+        });
       } else {
         signOut();
         navigation.reset({
